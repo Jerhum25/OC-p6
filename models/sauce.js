@@ -1,5 +1,7 @@
+// Import des différents modules
 const mongoose = require('mongoose');
 
+// Création d'un schéma de sauce
 const sauceShema = mongoose.Schema({
 
     name: { type: String, required: true },
@@ -16,4 +18,5 @@ const sauceShema = mongoose.Schema({
 
 });
 
+// Export du modèle
 module.exports = mongoose.model('Sauce', sauceShema);

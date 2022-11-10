@@ -1,11 +1,13 @@
+// Import du framework express et déclaration des variables
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
+
+require('dotenv').config()
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
-const dotenv = require('dotenv').config({encoding: "latin1"});
-const app = express();
 
-// Connection a mongoDB
+// Connexion à la base de donnée MongoDB
 mongoose.connect(process.env.MONGOOSE_KEY,
     {
         useNewUrlParser: true,
@@ -14,7 +16,10 @@ mongoose.connect(process.env.MONGOOSE_KEY,
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-// CORS
+// Appel de la méthode express
+const app = express();
+
+// Paramétrage des en-têtes CORS 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -22,16 +27,13 @@ app.use((req, res, next) => {
     next();
 });
 
+// Analyse des requêtes json
 app.use(express.json());
 
-app.use((req, res) => {
-    res.json({ message: 'Votre requête a bien été reçue !' });
-});
-
-const path = require('path');
+// Routes
 app.use('/api/auth', userRoutes);
-app.use('/api/sauces', sauceRoutes)
+app.use('/api/sauces', sauceRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-
+// Export du module app
 module.exports = app;

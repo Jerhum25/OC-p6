@@ -1,5 +1,7 @@
+// Import des différents modules
 const multer = require('multer');
 
+// Types de fichiers acceptés
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
@@ -7,6 +9,7 @@ const MIME_TYPES = {
     'image/gif' : 'gif'
 };
 
+// Configuration du chemin et du nom de fichier entrant
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'images');
@@ -19,4 +22,5 @@ const storage = multer.diskStorage({
     }
 });
 
+// Enregistre le fichier dans le dossier image
 module.exports = multer({storage: storage}).single('image');
